@@ -1,7 +1,29 @@
+import Axios from 'axios';
+
 export const SEARCH = 'SEARCH';
 export const SELECT = 'SELECT';
 export const RESULTS = 'RESULTS';
 export const LOADING = 'LOADING';
+
+
+export function asyncActionGetResults(query) {
+    return (dispatch, getState) => {
+        dispatch(actionLoading(true));
+        dispatch(actionSearch(query));
+        Axios.get(`https://collectionapi.metmuseum.org/public/collection/v1/search?q=${query}`)
+            .then(apiResults => {
+                const { results } = getState();
+                if (apiResults.data.objectIDs.length > results.length) {
+                    console.log(`got ${apiResults.data.objectIDs.length} results`);
+                    dispatch(actionResults(apiResults.data.objectIDs));
+
+                }
+                dispatch(actionLoading(false));
+
+            })
+        }
+    }
+
 
 export function actionLoading(isLoading) {
     return {
