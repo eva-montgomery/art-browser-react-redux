@@ -1,8 +1,9 @@
-import {SEARCH, SELECT, RESULTS } from "./actions";
+import {SEARCH, SELECT, RESULTS, LOADING } from "./actions";
 
 const defaultState = {
     query: '',
-    results: []
+    results: [],
+    isLoading: false
 }
 
 export function art(state=defaultState, action) {
@@ -16,7 +17,12 @@ switch(action.type) {
         return {
             ...state,
             results: action.payload.results
-        }    
+        }   
+    case LOADING:
+        return {
+            ...state,
+            isLoading: action.payload.isLoading
+        }     
     case SELECT:
         return {
             ...state,
